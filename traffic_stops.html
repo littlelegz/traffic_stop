@@ -14567,8 +14567,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Analyzing-the-Effect-of-Race-on-Maryland-Traffic-Stop-Outcomes">Analyzing the Effect of Race on Maryland Traffic Stop Outcomes<a class="anchor-link" href="#Analyzing-the-Effect-of-Race-on-Maryland-Traffic-Stop-Outcomes">&#182;</a></h1><h3 id="Jerry-Zhao">Jerry Zhao<a class="anchor-link" href="#Jerry-Zhao">&#182;</a></h3><h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><p>A traffic stop is a temporary detention of a vehicle and driver by police to investigate a possible crime or minor violation of the law on the grounds of reasonable suspicion that a crime has occurred or is about to occur. This standard was set by the U.S. Supreme Court in 1968 by the landmark case Terry v. Ohio. Once a police officer executes a traffic stop based on reasonable suspicion, the primary purpose is usually to determine if there is probable cause for arrest. In example, a police officer may suspect that a driver is driving under the influence (DUI) based on observed behavior and perform a traffic stop. After this, a breathalyzer test would be sufficient evidence to secure a warrant for arrest.</p>
 <p>The issue lies within the officer's preconceptions and personal judgement in establishing reasonable suspicion. Traffic stops disproportionally affect people of color who are more likely to get pulled over for trivial reasons. More recently there has been a push to reform traffic stops and ban low-level pretexts for stops such as: driving with a broke headlight or brake light, having a registration plate that not clearing displayed or fastened, driving without an inspection or emissions sticker, bumper issues, minor obstructions, etc.</p>
-<p>In 2015, the Standord Computational Journalism Lab and the Stanford Computation Policy Lab started the Open Policing Project which collects and analyzes traffic stop data from across the country (E. Pierson). The data varies greatly between the states in it's availability, variety, and coverage. One dataset that has been excluded from the Open Policing Projects analysis was the Maryland data which, among other factors, lacked locational data.</p>
-<p>In this tutorial, my goal is to tidy the Maryland traffic stop dataset collected from both State Patrol and local jurisdictions - <a href="https://openpolicing.stanford.edu/data/">available here</a> - and provide insights into the rate of traffic stops among different ethnic groups in different juristdictions.</p>
+<p>In 2015, the Stanford Computational Journalism Lab and the Stanford Computation Policy Lab started the Open Policing Project which collects and analyzes traffic stop data from across the country (E. Pierson). The data varies greatly between the states in it's availability, variety, and coverage. One dataset that has been excluded from the Open Policing Project's analysis was the Maryland data which, among other factors, lacked locational data.</p>
+<p>In this tutorial, my goal is to tidy the Maryland traffic stop dataset collected from both State Patrol and local jurisdictions - <a href="https://openpolicing.stanford.edu/data/">available here</a> - and provide insights into the rate of traffic stops among different ethnic groups in different jurisdictions.</p>
 <h1 id="Imports-and-Python-Libraries">Imports and Python Libraries<a class="anchor-link" href="#Imports-and-Python-Libraries">&#182;</a></h1>
 </div>
 </div>
@@ -14627,6 +14627,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <h1 id="Reading-the-data">Reading the data<a class="anchor-link" href="#Reading-the-data">&#182;</a></h1>
 </div>
 </div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>After reading the csv we obtained from the Open Policing Project, we find that there are almost 3.7 million recorded stops with 28 columns.</p>
+
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14673,8 +14681,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Pecularities-of-the-Maryland-Traffic-Stops-dataset">Pecularities of the Maryland Traffic Stops dataset<a class="anchor-link" href="#Pecularities-of-the-Maryland-Traffic-Stops-dataset">&#182;</a></h2><p>As mentioned previously, the Maryland dataset was more messy than the other state's data. It has some notable factors which limit the amount of useful data that can be used for any further analysis. Firstly, the data comes from three different time periods: 2007, 2009-2012, 2013-2014. They all have different column and slightly different conventions of how things are recorded. Before 2013, traffic stops were reported annually. Any stops from this period are only accurate to the year in which the stop was made. Month and day are filled with the values Jan 1. From 2013 onward, data is reported daily, allowing for better analysis.</p>
-<p>Also, the Open Policing Project noted that prior to 2013 there are quite a few NAs for contraband which are not casted as false since this data is suspected to be missing. In effect, we cannot rely on the records before 2013 for analyzing the number of vehicle searches.</p>
+<h2 id="Pecularities-of-the-Maryland-Traffic-Stops-dataset">Pecularities of the Maryland Traffic Stops dataset<a class="anchor-link" href="#Pecularities-of-the-Maryland-Traffic-Stops-dataset">&#182;</a></h2><p>As mentioned previously, the Maryland dataset was more messy than the other state's data. It has some notable factors which limit the amount of useful data that can be used for any further analysis. Firstly, the data comes from three different time periods: 2007, 2009-2012, and 2013-2014. They all have different columns (which were combined together in the final csv) and slightly different conventions of how things are recorded. Before 2013, traffic stops were reported annually. Any stops from this period are only accurate to the year in which the stop was made. Month and day are filled with the values Jan 1. From 2013 onward, data is reported daily, allowing for better analysis.</p>
+<p>Also, the Open Policing Project noted that prior to 2013 there are quite a few NAs for contraband which are not casted as false since this data is suspected to be missing. In effect, we cannot rely on the records before 2013 for analyzing the number of vehicle searches or contraband found.</p>
 <p>Due to the reasons above, we will focus on rows that have a recorded date for the traffic stop and years 2013 and after. This includes records from 2013-2014. Ultimately, this reduces the rows from 3669665 to 842138.</p>
 
 </div>
@@ -14741,7 +14749,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Tidying-and-Modifying-the-Data">Tidying and Modifying the Data<a class="anchor-link" href="#Tidying-and-Modifying-the-Data">&#182;</a></h1><h2 id="Removing-unused-columns">Removing unused columns<a class="anchor-link" href="#Removing-unused-columns">&#182;</a></h2><p>First we drop these columns: disposition, violation, reason_for_stop. The disposition and violation columns vary widely across police departments and are present in 1.9% and 0.1% of the rows respectively.  We will drop these columns as they are not useful for our analysis and lack standardized information. The reason_for_stop column is reported as a freeform text field indicating the reason for stop where provided. While the coverage of this column is high at99.2%, it contains police jargon which I can't decode. Therefore, we will drop this column as it also provides no useful information for our analysis. Next, we will drop the type column as all recorded stops in Maryland are vehicular. Finally, we will also drop the raw columns (raw_row_number, raw_Race, raw_Outcome, raw_Arrest_Made) as they contain redundant information already expounded upon in other columns.</p>
+<h1 id="Tidying-and-Modifying-the-Data">Tidying and Modifying the Data<a class="anchor-link" href="#Tidying-and-Modifying-the-Data">&#182;</a></h1><h2 id="Removing-unused-columns">Removing unused columns<a class="anchor-link" href="#Removing-unused-columns">&#182;</a></h2><p>First we drop these columns: disposition, violation, reason_for_stop. The disposition and violation columns vary widely across police departments and are present in 1.9% and 0.1% of the rows respectively.  We will drop these columns as they are not useful for our analysis and lack standardized information. The reason_for_stop column is reported as a freeform text field indicating the reason for stop where provided. While the coverage of this column is high at 99.2%, it contains police jargon which I can't decode. Therefore, we will drop this column as it also provides no useful information for our analysis. Next, we will drop the type column as all recorded stops in Maryland are vehicular. Finally, we will also drop the raw columns (raw_row_number, raw_Race, raw_Outcome, raw_Arrest_Made) as they contain redundant information already expounded upon in other columns.</p>
 
 </div>
 </div>
@@ -15063,7 +15071,15 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Let's pick the top 20 departments with the most stops to focus on. Since some of the department names have entries as acronyms and the full name. For example, Prince Geroge's County Police Department is also represented by PGCOPD. I will manually combine these entries together</p>
+<p>After grouping the data by department, we see that there are 209 departments, give or take.</p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Let's pick the top 20 departments with the most stops to focus on. Since some of the department names have entries as acronyms and other's use the full name. For example, Prince Geroge's County Police Department is also represented by PGCOPD. I will manually combine these entries together</p>
 
 </div>
 </div>
@@ -15393,7 +15409,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Based on the above graphs, we can see that despite accounting for the distribution of different races among the populace of each county, some races are overrepresented in citations and warnings. For example, in Prince George's County Police Department and Baltimore County Police Department, African Americans seem to stop African American drivers often than any other race. On the other hand, Maryland State Police and Montgomery Country Police Department stop Caucasians more often.</p>
+<p>Based on the above graphs, we can see that despite accounting for the distribution of different races among the populace of each county, some races are overrepresented in citations and warnings. For example, in Prince George's County Police Department and Baltimore County Police Department, police seem to stop African American drivers often than any other race. On the other hand, Maryland State Police and Montgomery Country Police Department stop Caucasians more often.</p>
 
 </div>
 </div>
